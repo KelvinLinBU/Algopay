@@ -1,5 +1,5 @@
-from p_ai import hello
+from algopay import hello
 
 
 def test_hello():
-    assert hello() == "Welcome to p-ai!"
+    assert hello() == "Welcome to algopay!"
