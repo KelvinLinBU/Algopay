@@ -1,3 +1,4 @@
 pytest
 py-algorand-sdk
 algokit-utils
+schedule

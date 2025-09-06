@@ -1,61 +1,89 @@
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+import sys
+import os
+
+# Ensure project root is in sys.path so algo_pay is importable
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
 from algo_pay.payroll import Payroll
 
 
+# ----------------------
+# Employee management
+# ----------------------
 @patch("algosdk.v2client.algod.AlgodClient")
 @patch("algosdk.account.address_from_private_key", return_value="TEST_ADDRESS")
 @patch("algosdk.mnemonic.to_private_key", return_value="TEST_PRIVATE_KEY")
-def test_init_payroll(mock_to_private, mock_addr_from_pk, mock_client):
-    payroll = Payroll("dummy mnemonic", network="testnet")
+def test_add_and_remove_employee(mock_to_private, mock_addr_from_pk, mock_client):
+    payroll = Payroll("dummy", department="TestDept", network="testnet")
 
-    assert payroll.employer_address == "TEST_ADDRESS"
-    assert payroll.employer_private_key == "TEST_PRIVATE_KEY"
-    mock_client.assert_called_once_with("", "https://testnet-api.algonode.cloud")
+    payroll.add_employee("EMP1", 2.5, name="Alice")
+    assert payroll.employees == {"EMP1": {"rate": 2.5, "name": "Alice"}}
+
+    payroll.remove_employee("EMP1")
+    assert payroll.employees == {}
 
 
+# ----------------------
+# Asset balance tests
+# ----------------------
 @patch("algosdk.v2client.algod.AlgodClient")
 @patch("algosdk.account.address_from_private_key", return_value="TEST_ADDRESS")
 @patch("algosdk.mnemonic.to_private_key", return_value="TEST_PRIVATE_KEY")
-def test_get_balance(mock_to_private, mock_addr_from_pk, mock_client):
+def test_get_asset_balance_found(mock_to_private, mock_addr_from_pk, mock_client):
     client_instance = mock_client.return_value
-    client_instance.account_info.return_value = {"amount": 5_000_000}  # 5 ALGOs
+    client_instance.account_info.return_value = {
+        "assets": [{"asset-id": 1234, "amount": 42}]
+    }
 
-    payroll = Payroll("dummy mnemonic", network="testnet")
-    balance = payroll.get_balance()
-
-    assert balance == 5.0
-    client_instance.account_info.assert_called_once_with("TEST_ADDRESS")
+    payroll = Payroll("dummy", department="TestDept", network="testnet")
+    balance = payroll.get_asset_balance("TEST_ADDRESS", 1234)
+    assert balance == 42
 
 
-@patch("algosdk.transaction.wait_for_confirmation")
-@patch("algosdk.transaction.PaymentTxn")
 @patch("algosdk.v2client.algod.AlgodClient")
 @patch("algosdk.account.address_from_private_key", return_value="TEST_ADDRESS")
 @patch("algosdk.mnemonic.to_private_key", return_value="TEST_PRIVATE_KEY")
-def test_send_payment(
-    mock_to_private, mock_addr_from_pk, mock_client, mock_payment_txn, mock_wait_confirm
+def test_get_asset_balance_not_found(mock_to_private, mock_addr_from_pk, mock_client):
+    client_instance = mock_client.return_value
+    client_instance.account_info.return_value = {"assets": []}
+
+    payroll = Payroll("dummy", department="TestDept", network="testnet")
+    balance = payroll.get_asset_balance("TEST_ADDRESS", 9999)
+    assert balance == 0
+
+
+# ----------------------
+# Payroll run + logging
+# ----------------------
+@patch("algo_pay.payroll.log_transaction")
+@patch("algo_pay.payroll.Payroll.send_payment")
+@patch("algosdk.v2client.algod.AlgodClient")
+@patch("algosdk.account.address_from_private_key", return_value="TEST_ADDRESS")
+@patch("algosdk.mnemonic.to_private_key", return_value="TEST_PRIVATE_KEY")
+def test_run_payroll_logs_transactions(
+    mock_to_private,
+    mock_addr_from_pk,
+    mock_client,
+    mock_send_payment,
+    mock_log_transaction,
 ):
-    # Setup fake client
-    client_instance = mock_client.return_value
-    client_instance.suggested_params.return_value = "FAKE_PARAMS"
-    client_instance.send_transaction.return_value = "FAKE_TXID"
+    payroll = Payroll("dummy", department="TestDept", network="testnet")
+    payroll.add_employee("EMP1", 2.0, name="Alice")
+    payroll.add_employee("EMP2", 3.0, name="Bob")
 
-    # Setup fake txn
-    fake_txn = MagicMock()
-    fake_txn.sign.return_value = "SIGNED_TXN"
-    mock_payment_txn.return_value = fake_txn
+    # Mock send_payment return values (txid, before, after, status)
+    mock_send_payment.side_effect = [
+        ("TXID1", 100.0, 90.0, "SUCCESS"),
+        ("TXID2", 90.0, 75.0, "SUCCESS"),
+    ]
 
-    payroll = Payroll("dummy mnemonic", network="testnet")
-    txid = payroll.send_payment("RECEIVER", 1.23, note="test")
+    txids = payroll.run_payroll(5, note="Test Payroll", job_id="Job1")
 
-    assert txid == "FAKE_TXID"
-    mock_payment_txn.assert_called_once_with(
-        sender="TEST_ADDRESS",
-        sp="FAKE_PARAMS",
-        receiver="RECEIVER",
-        amt=int(1.23 * 1e6),
-        note=b"test",
-    )
-    fake_txn.sign.assert_called_once_with("TEST_PRIVATE_KEY")
-    client_instance.send_transaction.assert_called_once_with("SIGNED_TXN")
-    mock_wait_confirm.assert_called_once_with(client_instance, "FAKE_TXID", 4)
+    assert txids == ["TXID1", "TXID2"]
+    assert mock_send_payment.call_count == 2
+    assert mock_log_transaction.call_count == 2
+
+    # Verify department is passed correctly (first arg after file)
+    first_call_args = mock_log_transaction.call_args_list[0][0]
+    assert first_call_args[1] == "TestDept"
