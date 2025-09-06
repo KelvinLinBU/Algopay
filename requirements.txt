@@ -3,3 +3,4 @@ py-algorand-sdk
 algokit-utils
 schedule
 pandas
+dotenv
