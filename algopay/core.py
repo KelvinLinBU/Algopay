@@ -1,4 +1,4 @@
-# p_ai/core.py
+# algopay/core.py
 
 
 def hello():

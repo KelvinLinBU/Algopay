@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "algopay"
+
+version = "0.1.0"
+
+description = "A python library built on Algorand Python SDK for free, open-source, crypto-based payroll."
+readme = "README.md"
+license = { text = "MIT" }
+authors = [
+    { name = "Kelvin Lin", email = "kelvin@bu.edu" }
+]
+requires-python = ">=3.9"
+
+dependencies = [
+    "py-algorand-sdk>=2.0.0",
+    "pyteal>=0.25.0",
+    "pandas>=2.0.0"   # for payroll reports
+]
+
+[tool.setuptools.packages.find]
+where = ["algopay"]
+
+[project.urls]
+Homepage = "https://github.com/KelvinLinBU/Algopay"
+Repository = "https://github.com/KelvinLinBU/Algopay"
