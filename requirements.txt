@@ -4,3 +4,4 @@ algokit-utils
 schedule
 pandas
 dotenv
+pyteal
