@@ -1,4 +1,4 @@
-from algopay import hello
+from algo_pay import hello
 
 
 def test_hello():
