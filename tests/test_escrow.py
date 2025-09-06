@@ -29,6 +29,7 @@ def test_build_escrow_generates_valid_teal():
 @patch("contracts.generate_escrow.subprocess.run")
 def test_main_generates_teal_and_compiles(mock_run, tmp_path, monkeypatch):
     """Simulate CSV input, Docker calls, and ensure compiled CSV is created."""
+
     # Fake subprocess.run to bypass real Docker/goal
     def fake_subprocess_run(cmd, **kwargs):
         if "compile" in cmd:
