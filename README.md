@@ -36,7 +36,7 @@ Algopay is a free, open-source Python library for running **automated payroll an
 ## Why Algopay?
 
 **What makes this different**
-
+- **Open and Affordable** — Open-source, free, and pip-installable.
 - **Pragmatic API** — A single `Payroll` class covers 90% of payout needs: add employees, run once, or run on a timer.
 - **Auditable by default** — Every payment appends a row to a **CSV ledger** with `department`, `job_id`, `payroll_id`, balances, and status.
 - **Parallel departments** — Run multiple departments **concurrently** with different mnemonics and intervals, writing to the same ledger.
@@ -51,14 +51,8 @@ Algopay is a free, open-source Python library for running **automated payroll an
 # Recommended: install from GitHub
 pip install "git+https://github.com/KelvinLinBU/Algopay.git"
 
-# Or clone for development
-git clone https://github.com/KelvinLinBU/Algopay.git
-cd Algopay
-pip install -e .
-
-# Optional (dev tooling)
-pip install pre-commit pytest
-pre-commit install
+# Download from pip
+pip install algopay
 ```
 
 > Python 3.10+ recommended.
