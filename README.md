@@ -1,5 +1,12 @@
 # Algopay — Open-source Algorand Payroll & Payouts Toolkit
 
+[![PyPI version](https://img.shields.io/pypi/v/algopay.svg)](https://pypi.org/project/algopay/)
+[![Python versions](https://img.shields.io/pypi/pyversions/algopay.svg)](https://pypi.org/project/algopay/)
+[![Build Status](https://github.com/KelvinLinBU/Algopay/actions/workflows/tests.yml/badge.svg)](https://github.com/KelvinLinBU/Algopay/actions)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Linting: Ruff](https://img.shields.io/badge/linting-ruff-46a9f2.svg)](https://github.com/astral-sh/ruff)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
 Algopay is a free, open-source Python library for running **automated payroll and general payouts on Algorand**. Schedule recurring jobs, pay many employees across departments, generate a CSV ledger, compile simple escrow contracts, send email notifications, and drop down to low-level transaction helpers when you need to.
 
 - **Free & open source** (pip-installable from Git)
@@ -7,6 +14,12 @@ Algopay is a free, open-source Python library for running **automated payroll an
 - **Strong defaults** (CSV audit log, per-run `payroll_id`, background jobs)
 - **Clean repo** (pre-commit: Ruff + Black, pytest, CI workflows, Dependabot)
 
+---
+## Project Resources
+
+- **Overview Video**: [Watch on YouTube](https://youtu.be/cwKuo_o7WNs)  
+- **Smart Contract Demo Video**: [Watch on YouTube](https://youtu.be/0zysFnA_wdQ)  
+- **Canva Presentation**: [View on Canva](https://www.canva.com/design/DAGyQdlW__0/C1DJHWW8REEy7AVWkz8jOw/edit?utm_content=DAGyQdlW__0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)  
 ---
 
 ## Table of Contents

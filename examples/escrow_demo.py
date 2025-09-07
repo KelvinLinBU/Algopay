@@ -5,19 +5,6 @@ Escrow Demo
 Generate simple PyTeal escrow contracts for employees, save TEAL files,
 and optionally compile them inside the Algokit LocalNet container to get
 the escrow addresses.
-
-Usage:
-  # Use an example CSV automatically (if present) or built-in fallback data
-  python examples/escrow_demo.py
-
-  # Explicit CSV input
-  python examples/escrow_demo.py --csv example_employee_data/3_example_employees.csv
-
-  # Just print TEAL to console (still writes files), skip docker compile
-  python examples/escrow_demo.py --no-compile
-
-  # Force docker container name (if you changed it)
-  python examples/escrow_demo.py --container algokit_sandbox_algod
 """
 
 from __future__ import annotations
@@ -66,7 +53,6 @@ def _load_rows(csv_path: Path | None) -> List[Dict[str, int | str]]:
             raise ValueError(f"CSV is missing required columns: {missing}")
         return df.to_dict(orient="records")
 
-    # Fallback demo rows (addresses pulled from your repo/test fixtures)
     return [
         {
             "employee_address": "66MDNQQLL2A3LXHSEZWJ7PZGIWRP3NBNBPO62K3BCSP2VMFNQABCJFQQHQ",
