@@ -40,7 +40,7 @@ payload = {
 
 # Create EmailNotifier
 notifier = EmailNotifier(
-    smtp_server="smtp.mail.yahoo.com",   # or your SMTP provider
+    smtp_server="smtp.mail.yahoo.com",  # or your SMTP provider
     smtp_port=587,
     sender_email=os.getenv("SMTP_SENDER"),
     sender_password=os.getenv("SMTP_PASSWORD"),

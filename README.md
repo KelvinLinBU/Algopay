@@ -304,15 +304,15 @@ class Payroll:
     def stop_payroll_job(self) -> None
 ```
 
-- **Networks**  
-  - `localnet` → `http://localhost:4001` (token `"a"*64`)  
-  - `testnet`  → `https://testnet-api.algonode.cloud`  
+- **Networks**
+  - `localnet` → `http://localhost:4001` (token `"a"*64`)
+  - `testnet`  → `https://testnet-api.algonode.cloud`
   - `mainnet`  → `https://mainnet-api.algonode.cloud`
 
-- **Logging**  
+- **Logging**
   Every individual employee payment is appended to `history_file` with a unique `payroll_id` per batch.
 
-- **Notifications**  
+- **Notifications**
   If you pass a `Notifier`, `run_payroll` auto-sends a “job completed” payload (`job_id`, `payroll_id`, `department`, employees, `txids`, `status`).
 
 ### Notifier

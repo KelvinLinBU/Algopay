@@ -9,7 +9,9 @@ from typing import Dict, Any, Optional
 class Notifier:
     """Base notifier interface."""
 
-    def notify(self, payload: Dict[str, Any], recipient_override: Optional[str] = None) -> None:
+    def notify(
+        self, payload: Dict[str, Any], recipient_override: Optional[str] = None
+    ) -> None:
         """Send a notification given a payload."""
         raise NotImplementedError("Subclasses must implement notify()")
 
@@ -17,7 +19,9 @@ class Notifier:
 class ConsoleNotifier(Notifier):
     """Simple notifier that prints to console."""
 
-    def notify(self, payload: Dict[str, Any], recipient_override: Optional[str] = None) -> None:
+    def notify(
+        self, payload: Dict[str, Any], recipient_override: Optional[str] = None
+    ) -> None:
         print(f"[ConsoleNotifier] Notification: {payload}")
 
 
@@ -41,7 +45,9 @@ class EmailNotifier(Notifier):
         self.sender_password = sender_password
         self.recipient_email = recipient_email
 
-    def notify(self, payload: Dict[str, Any], recipient_override: Optional[str] = None) -> None:
+    def notify(
+        self, payload: Dict[str, Any], recipient_override: Optional[str] = None
+    ) -> None:
         """Send an email immediately with job details in the payload."""
         recipient = recipient_override or self.recipient_email
 
@@ -65,9 +71,7 @@ class EmailNotifier(Notifier):
             with smtplib.SMTP(self.smtp_server, self.smtp_port) as server:
                 server.starttls()
                 server.login(self.sender_email, self.sender_password)
-                server.sendmail(
-                    self.sender_email, recipient, message.as_string()
-                )
+                server.sendmail(self.sender_email, recipient, message.as_string())
             print(
                 f"[EmailNotifier] Email sent to {recipient} for job {payload.get('job_id')}"
             )
