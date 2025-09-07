@@ -1,12 +1,11 @@
-from typing import Dict, List
+from typing import Dict, List, Optional
 from algosdk.v2client import algod
 from algosdk import mnemonic, account, transaction
 import csv
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 import threading
 import time
-from datetime import timezone
 
 
 def log_transaction(
@@ -73,6 +72,7 @@ class Payroll:
         department: str,
         network: str = "localnet",
         history_file: str = "payroll_history.csv",
+        notifier: Optional[object] = None,
     ):
         # Select network
         if network == "localnet":
@@ -101,6 +101,9 @@ class Payroll:
 
         # History file
         self.history_file = history_file
+
+        # Optional notifier (ConsoleNotifier, EmailNotifier, etc.)
+        self.notifier = notifier
 
         print(f"[{self.department}] Connected as {self.employer_address}")
 
@@ -199,6 +202,19 @@ class Payroll:
             )
 
         print(f"[{self.department}] Payroll complete. ID: {payroll_id}")
+
+        # 🔔 Notify if enabled
+        if self.notifier:
+            payload = {
+                "job_id": job_id,
+                "payroll_id": payroll_id,
+                "department": self.department,
+                "employees": [d["name"] for d in self.employees.values()],
+                "txids": txids,
+                "status": "SUCCESS" if txids else "FAILED",
+            }
+            self.notifier.notify(payload)
+
         return txids
 
     # ----------------------
