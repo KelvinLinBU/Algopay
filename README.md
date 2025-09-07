@@ -17,9 +17,9 @@ Algopay is a free, open-source Python library for running **automated payroll an
 ---
 ## Project Resources
 
-- **Overview Video**: [Watch on YouTube](https://youtu.be/cwKuo_o7WNs)  
-- **Smart Contract Demo Video**: [Watch on YouTube](https://youtu.be/0zysFnA_wdQ)  
-- **Canva Presentation**: [View on Canva](https://www.canva.com/design/DAGyQdlW__0/C1DJHWW8REEy7AVWkz8jOw/edit?utm_content=DAGyQdlW__0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)  
+- **Overview Video**: [Watch on YouTube](https://youtu.be/cwKuo_o7WNs)
+- **Smart Contract Demo Video**: [Watch on YouTube](https://youtu.be/0zysFnA_wdQ)
+- **Canva Presentation**: [View on Canva](https://www.canva.com/design/DAGyQdlW__0/C1DJHWW8REEy7AVWkz8jOw/edit?utm_content=DAGyQdlW__0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 ---
 
 ## Table of Contents
