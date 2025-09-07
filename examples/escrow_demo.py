@@ -23,11 +23,10 @@ Usage:
 from __future__ import annotations
 
 import argparse
-import os
 import sys
 import subprocess
 from pathlib import Path
-from typing import Iterable, List, Dict
+from typing import List, Dict
 
 import pandas as pd
 
