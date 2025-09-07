@@ -3,8 +3,8 @@ requires = ["hatchling>=1.25"]
 build-backend = "hatchling.build"
 
 [project]
-name = "algopay"  # change if this name is taken on PyPI
-version = "0.1.0"
+name = "algopay" 
+version = "0.1.1"
 description = "Open-source Algorand payroll & payments toolkit (multi-department, schedulers, escrow, logging, notifications)"
 readme = "README.md"
 requires-python = ">=3.10"
